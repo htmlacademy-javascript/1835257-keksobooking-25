@@ -1,3 +1,5 @@
+const ADVERTISEMENT_COUNT = 10;
+
 const getRandomInteger = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -29,15 +31,12 @@ const PHOTOS = [
 ];
 
 // Вспомогательные функции
-const getRandomArrayElement = (arr) => arr[getRandomInteger(0, arr.length - 1)];
+const getRandomArrayElement = (items) => items[getRandomInteger(0, items.length - 1)];
 
-let referenceNumber;
+
 const getRandomAvatar = () => {
-  referenceNumber = getRandomArrayElement(NUMBER);
-  if (referenceNumber < 10) {
-    return (`img/avatars/user0${referenceNumber}.png`);
-  }
-  return (`img/avatars/user${referenceNumber}.png`);
+  const referenceNumber = getRandomArrayElement(NUMBER);
+  return referenceNumber < 10 ? `img/avatars/user0${referenceNumber}.png`: `img/avatars/user${referenceNumber}.png`;
 };
 
 const getRandomLocationPoint = (min, max, decimalPlaces) => {
@@ -48,20 +47,20 @@ const getRandomLocationPoint = (min, max, decimalPlaces) => {
 };
 
 
-const getRandomArrayElements = (arr) => {
-  const maxLength = arr.length;
+const getRandomArrayElements = (items) => {
+  const maxLength = items.length;
   const lengthOfArray = getRandomInteger(1, maxLength);
-  const array = [];
+  const elements = [];
 
-  while (array.length < lengthOfArray) {
+  while (elements.length < lengthOfArray) {
     const indexOfEl = getRandomInteger(0, maxLength - 1);
-    const el = arr[indexOfEl];
+    const el = items[indexOfEl];
 
-    if (!array.includes(el)) {
-      array.push(el);
+    if (!elements.includes(el)) {
+      elements.push(el);
     }
   }
-  return array;
+  return elements;
 };
 
 // Собираем объект
@@ -96,8 +95,8 @@ const createAdvertisement = () => {
 
 // Собираем массив
 
-const NUMBER_OF_OBJ = 10;
-const objectGenerator = new Array(NUMBER_OF_OBJ).fill(null).map(createAdvertisement);
+
+const advertisements = new Array(ADVERTISEMENT_COUNT).fill(null).map(createAdvertisement);
 
 // eslint-disable-next-line no-unused-expressions
-objectGenerator;
+advertisements;
