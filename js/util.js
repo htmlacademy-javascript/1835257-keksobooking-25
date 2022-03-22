@@ -1,6 +1,5 @@
 import {
-  ADVERTISEMENT_COUNT,
-  FEATURES,
+  FEATURES, getRandomArrayElements, getRandomAvatar, getRandomLocationPoint,
   LAT_LIMIT_MAX,
   LAT_LIMIT_MIN,
   LNG_LIMIT_MAX,
@@ -10,8 +9,6 @@ import {
   TYPES
 } from './data.js';
 
-//Получить случайное целое число из диапазона
-
 const getRandomInteger = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -20,40 +17,8 @@ const getRandomInteger = (min, max) => {
   }
   return Math.floor(Math.random() * (max - min + 1)) + min;};
 
-// Вспомогательные функции
+
 const getRandomArrayElement = (items) => items[getRandomInteger(0, items.length - 1)];
-
-
-const getRandomAvatar = () => {
-  const referenceNumber = getRandomArrayElement(ADVERTISEMENT_COUNT);
-  return referenceNumber < 10 ? `img/avatars/user0${referenceNumber}.png`: `img/avatars/user${referenceNumber}.png`;
-};
-
-const getRandomLocationPoint = (min, max, decimalPlaces) => {
-  if (min >= max) {
-    throw new Error('Недопустимое значение диапазона');
-  }
-  return (Math.random() * (max - min) + min).toFixed(decimalPlaces);
-};
-
-
-const getRandomArrayElements = (items) => {
-  const maxLength = items.length;
-  const lengthOfArray = getRandomInteger(1, maxLength);
-  const elements = [];
-
-  while (elements.length < lengthOfArray) {
-    const indexOfEl = getRandomInteger(0, maxLength - 1);
-    const el = items[indexOfEl];
-
-    if (!elements.includes(el)) {
-      elements.push(el);
-    }
-  }
-  return elements;
-};
-
-// Собираем объект
 
 const createAdvertisement = () => {
   const randomLat = getRandomLocationPoint(LAT_LIMIT_MIN, LAT_LIMIT_MAX, 5);
@@ -83,4 +48,4 @@ const createAdvertisement = () => {
   };
 };
 
-export {createAdvertisement};
+export {createAdvertisement, getRandomArrayElement, getRandomInteger};
