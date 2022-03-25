@@ -1,4 +1,4 @@
-import {getRandomArrayElement, getRandomInteger} from './util';
+import {getRandomArrayElement, getRandomInteger} from './util.js';
 
 const ADVERTISEMENT_COUNT = 10;
 
@@ -76,4 +76,6 @@ const createAdvertisement = () => {
   };
 };
 
-export {ADVERTISEMENT_COUNT, LAT_LIMIT_MIN, LAT_LIMIT_MAX, LNG_LIMIT_MIN, LNG_LIMIT_MAX, FEATURES, PHOTOS, TIMES, TYPES, getRandomArrayElements, getRandomLocationPoint, getRandomAvatar, createAdvertisement };
+const advertisements = new Array(ADVERTISEMENT_COUNT).fill(null).map(createAdvertisement);
+
+export{advertisements};

@@ -1,4 +1,5 @@
-import {advertisements} from './main';
+import {advertisements} from './data.js';
+
 
 const translatePopupType = (data) => {
 
@@ -41,40 +42,49 @@ const makeCardPhotos = (document, photos) => {
   }
 };
 
-const checkEmptyBlock = (document) => {
-  const popup = document.querySelector('.popup');
-  for (let i=0; i<popup.children.length; i++) {
-    if (popup.children[i].textContent ==='') {
-      popup.children[i].classList.add('hidden');
-    }
+const checkEmptyBlock = (data, element) => {
+  if (!data) {
+    element.hidden = true;
   }
 };
 
+const mapCanvas = document.querySelector('#map-canvas');
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const cardTemplate = document.querySelector('#card');
 
-const popupFragment = document.createDocumentFragment();
+const makeCardList = (ads) => {
+  const cardElement = cardTemplate.cloneNode(true);
+  const adTitle = cardElement.querySelector('.popup__title');
+  adTitle.textContent = ads.offer.title;
+  const adAddress = cardElement.querySelector('.popup__text--address');
+  adAddress.textContent = ads.offer.address;
+  const adPrice = cardElement.querySelector('.popup__text--price');
+  adPrice.textContent = `${ads.offer.price} ₽/ночь`;
+  const adType = cardElement.querySelector('.popup__type');
+  adType.textContent = translatePopupType(ads.offer.type);
+  const adCapacity = cardElement.querySelector('.popup__text--capacity');
+  adCapacity.textContent = `${ads.offer.rooms} комнаты для ${ads.offer.guest} гостей`;
+  const adTime = cardElement.querySelector('.popup__text--time');
+  adTime.textContent = `Заезд после ${ads.offer.checkin}, выезд до ${ads.offer.checkout}`;
+  const adFeatures = cardElement.querySelectorAll('.popup__features');
+  makeCardFeatures(cardElement, ads.offer.features);
+  const adDescription = cardElement.querySelector('.popup__description');
+  adDescription.textContent = ads.offer.description ;
+  makeCardPhotos(cardElement, ads.offer.photos);
+  const adAvatar = cardElement.querySelector('.popup__avatar');
+  adAvatar.src = ads.author.avatar;
 
-const makeCardList = () => {
-  advertisements.forEach(({author, offer}) => {
-    const cardElement = cardTemplate.cloneNode(true);
-    cardElement.querySelector('.popup__title').textContent = offer.title;
-    cardElement.querySelector('.popup__text--address').textContent = offer.address;
-    cardElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-    cardElement.querySelector('.popup__type').textContent = translatePopupType(offer.type);
-    cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-    cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-    makeCardFeatures(cardElement, offer.features);
-    cardElement.querySelector('.popup__description').textContent = offer.description ;
-    makeCardPhotos(cardElement, offer.photos);
-    cardElement.querySelector('.popup__avatar').src = author.avatar;
-    checkEmptyBlock(cardElement);
-    popupFragment.appendChild(cardElement);
-  });
-  return popupFragment;
+  checkEmptyBlock(ads.offer.title, adTitle);
+  checkEmptyBlock(ads.offer.address, adAddress);
+  checkEmptyBlock(ads.offer.price, adPrice);
+  checkEmptyBlock(ads.offer.type, adType);
+  checkEmptyBlock(ads.offer.rooms, adCapacity);
+  checkEmptyBlock(ads.offer.checkin, adTime);
+  checkEmptyBlock(ads.offer.description, adDescription);
+  checkEmptyBlock(ads.author.avatar, adAvatar);
+  checkEmptyBlock(ads.offer.features, adFeatures);
+
+  return cardElement;
 };
 
-const mapCanvas = document.querySelector('#map-canvas');
-const cardList = makeCardList();
-const firstCardItem = cardList.querySelectorAll('.popup');
-mapCanvas.appendChild(firstCardItem[0]);
+mapCanvas.appendChild(makeCardList(advertisements[0]));
