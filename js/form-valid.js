@@ -67,19 +67,18 @@ const roomsOption = {
   '100': ['0'],
 };
 
-function validateDelivery () {
-  return roomsOption[roomNumber.value].includes(capacity.value);
-}
+const validateDelivery = () => roomsOption[roomNumber.value].includes(capacity.value);
+const getDeliveryErrorMessage = () => 'Выберите другое кол-во гостей :)';
 
-function getDeliveryErrorMessage () {
-  return 'Выберите другое кол-во гостей :)';
-}
+pristine.addValidator(
+  capacity,
+  validateDelivery,
+  getDeliveryErrorMessage
+);
 
 roomNumber.addEventListener('change', () => {
   pristine.validate(capacity);
 });
-
-pristine.addValidator(capacity, validateDelivery, getDeliveryErrorMessage);
 
 // Валидация времени заезда и выезда
 
