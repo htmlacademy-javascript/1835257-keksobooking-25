@@ -1,6 +1,8 @@
+const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+
 const translatePopupType = (data) => {
 
-  const typeItem = {
+  const TYPE_ITEM = {
     'Дворец': 'palace',
     'Квартира': 'flat',
     'Дом': 'house',
@@ -9,9 +11,9 @@ const translatePopupType = (data) => {
   };
 
 
-  for (const key in typeItem) {
+  for (const key in TYPE_ITEM) {
 
-    if (typeItem[key] === data) {
+    if (TYPE_ITEM[key] === data) {
       return key;
     }
 
@@ -44,8 +46,6 @@ const checkEmptyBlock = (data, element) => {
     element.hidden = true;
   }
 };
-
-const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const makeCardList = (ads) => {
   const cardElement = cardTemplate.cloneNode(true);
