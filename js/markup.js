@@ -1,6 +1,3 @@
-import {advertisements} from './data.js';
-
-
 const translatePopupType = (data) => {
 
   const typeItem = {
@@ -48,9 +45,7 @@ const checkEmptyBlock = (data, element) => {
   }
 };
 
-const mapCanvas = document.querySelector('#map-canvas');
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-
 
 const makeCardList = (ads) => {
   const cardElement = cardTemplate.cloneNode(true);
@@ -87,4 +82,4 @@ const makeCardList = (ads) => {
   return cardElement;
 };
 
-mapCanvas.appendChild(makeCardList(advertisements[0]));
+export {makeCardList};
