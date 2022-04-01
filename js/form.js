@@ -1,12 +1,12 @@
-const form = document.querySelector('.ad-form');
+const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 
 //неактивное состояние
 
 const getDisactiveState = () => {
-  form.classList.add('ad-form--disabled');
-  for (let i=0; i < form.children.length; i++) {
-    form.children[i].disabled = true;
+  adForm.classList.add('ad-form--disabled');
+  for (let i=0; i < adForm.children.length; i++) {
+    adForm.children[i].disabled = true;
   }
   mapFilters.classList.add('ad-form--disabled');
   for (let i=0; i < mapFilters.children.length; i++) {
@@ -17,9 +17,9 @@ const getDisactiveState = () => {
 // активное состояние
 
 const getActiveState = () => {
-  form.classList.remove('ad-form--disabled');
-  for (let i=0; i < form.children.length; i++) {
-    form.children[i].disabled = false;
+  adForm.classList.remove('ad-form--disabled');
+  for (let i=0; i < adForm.children.length; i++) {
+    adForm.children[i].disabled = false;
   }
   mapFilters.classList.remove('ad-form--disabled');
   for (let i=0; i < mapFilters.children.length; i++) {
@@ -27,4 +27,4 @@ const getActiveState = () => {
   }
 };
 
-export{getDisactiveState, getActiveState};
+export{getDisactiveState, getActiveState, adForm};
