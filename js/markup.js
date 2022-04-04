@@ -47,39 +47,40 @@ const checkEmptyBlock = (data, element) => {
   }
 };
 
-const makeCardList = (ads) => {
+const createPopup = ({offer, author}) => {
   const cardElement = cardTemplate.cloneNode(true);
   const adTitle = cardElement.querySelector('.popup__title');
-  adTitle.textContent = ads.offer.title;
   const adAddress = cardElement.querySelector('.popup__text--address');
-  adAddress.textContent = ads.offer.address;
   const adPrice = cardElement.querySelector('.popup__text--price');
-  adPrice.textContent = `${ads.offer.price} ₽/ночь`;
   const adType = cardElement.querySelector('.popup__type');
-  adType.textContent = translatePopupType(ads.offer.type);
   const adCapacity = cardElement.querySelector('.popup__text--capacity');
-  adCapacity.textContent = `${ads.offer.rooms} комнаты для ${ads.offer.guest} гостей`;
   const adTime = cardElement.querySelector('.popup__text--time');
-  adTime.textContent = `Заезд после ${ads.offer.checkin}, выезд до ${ads.offer.checkout}`;
   const adFeatures = cardElement.querySelectorAll('.popup__features');
-  makeCardFeatures(cardElement, ads.offer.features);
   const adDescription = cardElement.querySelector('.popup__description');
-  adDescription.textContent = ads.offer.description ;
-  makeCardPhotos(cardElement, ads.offer.photos);
   const adAvatar = cardElement.querySelector('.popup__avatar');
-  adAvatar.src = ads.author.avatar;
 
-  checkEmptyBlock(ads.offer.title, adTitle);
-  checkEmptyBlock(ads.offer.address, adAddress);
-  checkEmptyBlock(ads.offer.price, adPrice);
-  checkEmptyBlock(ads.offer.type, adType);
-  checkEmptyBlock(ads.offer.rooms, adCapacity);
-  checkEmptyBlock(ads.offer.checkin, adTime);
-  checkEmptyBlock(ads.offer.description, adDescription);
-  checkEmptyBlock(ads.author.avatar, adAvatar);
-  checkEmptyBlock(ads.offer.features, adFeatures);
+  adTitle.textContent = offer.title;
+  adAddress.textContent = offer.address;
+  adPrice.textContent = `${offer.price} ₽/ночь`;
+  adType.textContent = translatePopupType(offer.type);
+  adCapacity.textContent = `${offer.rooms} комнаты для ${offer.guest} гостей`;
+  adTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  adDescription.textContent = offer.description ;
+  makeCardPhotos(cardElement, offer.photos);
+  makeCardFeatures(cardElement, offer.features);
+  adAvatar.src = author.avatar;
+
+  checkEmptyBlock(offer.title, adTitle);
+  checkEmptyBlock(offer.address, adAddress);
+  checkEmptyBlock(offer.price, adPrice);
+  checkEmptyBlock(offer.type, adType);
+  checkEmptyBlock(offer.rooms, adCapacity);
+  checkEmptyBlock(offer.checkin, adTime);
+  checkEmptyBlock(offer.description, adDescription);
+  checkEmptyBlock(author.avatar, adAvatar);
+  checkEmptyBlock(offer.features, adFeatures);
 
   return cardElement;
 };
 
-export {makeCardList};
+export {createPopup};

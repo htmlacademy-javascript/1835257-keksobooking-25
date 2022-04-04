@@ -1,7 +1,6 @@
-import {makeCardList} from './markup.js';
-import {adForm, getActiveState} from './form.js';
+import {createPopup} from './markup.js';
+import {adForm, getActiveState, getDisactiveState} from './form.js';
 import {advertisements} from './data.js';
-
 
 const INITIAL_COORDS = {
   lat: 35.652832,
@@ -13,7 +12,9 @@ const MAIN_MARKER_COORDS = {
   lng: 139.83948,
 };
 
-const loadMap = L.map('map-canvas')
+getDisactiveState();
+
+const map = L.map('map-canvas')
   .on('load', () => {
     getActiveState();
     adForm.address.value = `${INITIAL_COORDS.lat}, ${INITIAL_COORDS.lng}`;
@@ -28,7 +29,7 @@ L.tileLayer(
   {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   },
-).addTo(loadMap);
+).addTo(map);
 
 
 // настройка осн маркера
@@ -50,7 +51,7 @@ const mainPinMarker = L.marker(
   },
 );
 
-mainPinMarker.addTo(loadMap);
+mainPinMarker.addTo(map);
 
 
 mainPinMarker.on('drag', (evt) => {
@@ -58,25 +59,25 @@ mainPinMarker.on('drag', (evt) => {
   adForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
 
-const renderPoints = (array) => {
+const renderPoints = (ads) => {
   const regularPinIcon = L.icon({
     iconUrl: '../img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
-  array.forEach((ad) => {
+  ads.forEach(({author, offer, location}) => {
     const regularPinMarker = L.marker(
       {
-        lat: ad.location.lat,
-        lng: ad.location.lng,
+        lat: location.lat,
+        lng: location.lng,
       },
       {
         draggable: false,
         icon: regularPinIcon,
       },
     );
-    regularPinMarker.addTo(loadMap)
-      .bindPopup(makeCardList(ad));
+    regularPinMarker.addTo(map)
+      .bindPopup(createPopup({author, offer}));
   });
 };
 

@@ -6,6 +6,9 @@ const adPrice = document.querySelector('#price');
 const adType = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
+const sliderPrice = document.querySelector('.ad-form__slider');
+
+const MAX_PRICE_FOR_NIGHT = 100000;
 
 const  MIN_AD_PRICE= {
   palace: 10000,
@@ -108,4 +111,24 @@ form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     //alert('Форма невалидна');
   }
+});
+
+// Добавили слайдер
+
+noUiSlider.create(sliderPrice, {
+  range: {
+    min: 0,
+    max: MAX_PRICE_FOR_NIGHT,
+  },
+  start: 0,
+  step: 100,
+});
+
+sliderPrice.noUiSlider.on('slide', () => {
+  adPrice.value = sliderPrice.noUiSlider.get();
+  pristine.validate(adPrice);
+});
+
+adPrice.addEventListener('change', () => {
+  sliderPrice.noUiSlider.set(adPrice.value);
 });
