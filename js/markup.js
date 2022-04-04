@@ -47,6 +47,7 @@ const checkEmptyBlock = (data, element) => {
   }
 };
 
+
 const createPopup = ({offer, author}) => {
   const cardElement = cardTemplate.cloneNode(true);
   const adTitle = cardElement.querySelector('.popup__title');
