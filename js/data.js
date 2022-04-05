@@ -20,7 +20,7 @@ const PHOTOS = [
 ];
 
 const getRandomAvatar = () => {
-  const referenceNumber = getRandomArrayElement(ADVERTISEMENT_COUNT);
+  const referenceNumber = getRandomInteger(1, ADVERTISEMENT_COUNT);
   return referenceNumber < 10 ? `img/avatars/user0${referenceNumber}.png`: `img/avatars/user${referenceNumber}.png`;
 };
 
