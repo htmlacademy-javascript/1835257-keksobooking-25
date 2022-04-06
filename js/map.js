@@ -1,6 +1,7 @@
 import {createPopup} from './markup.js';
 import {adForm, getActiveState, getDisactiveState} from './form.js';
-import {advertisements} from './data.js';
+import {getData} from './api.js';
+
 
 const INITIAL_COORDS = {
   lat: 35.652832,
@@ -11,6 +12,8 @@ const MAIN_MARKER_COORDS = {
   lat: 35.65283,
   lng: 139.83948,
 };
+
+const ADS_COUNT = 10;
 
 getDisactiveState();
 
@@ -31,14 +34,19 @@ L.tileLayer(
   },
 ).addTo(map);
 
-
-// настройка осн маркера
-
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
+const regularPinIcon = L.icon({
+  iconUrl: '../img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+// настройка осн маркера
 
 const mainPinMarker = L.marker(
   {
@@ -59,28 +67,22 @@ mainPinMarker.on('drag', (evt) => {
   adForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const renderPoints = (ads) => {
-  const regularPinIcon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-  ads.forEach(({author, offer, location}) => {
-    const regularPinMarker = L.marker(
-      {
-        lat: location.lat,
-        lng: location.lng,
-      },
-      {
-        draggable: false,
-        icon: regularPinIcon,
-      },
-    );
-    regularPinMarker.addTo(map)
-      .bindPopup(createPopup({author, offer}));
-  });
+  const regularPinMarker = L.marker(
+    {
+      lat: ads.location.lat,
+      lng: ads.location.lng,
+    },
+    {
+      draggable: false,
+      icon: regularPinIcon,
+    },
+  );
+  regularPinMarker.addTo(markerGroup)
+    .bindPopup(createPopup(ads));
 };
 
-renderPoints(advertisements);
-
-
+const getAds = getData(renderPoints, ADS_COUNT);
+getAds();
