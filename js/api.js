@@ -1,6 +1,6 @@
 import {showAlert} from './util.js';
 
-const getData = (onSuccess, count) => () => fetch(
+const getData = (onSuccess) => fetch(
   'https://25.javascript.pages.academy/keksobooking/data',
   {
     method: 'GET',
@@ -14,9 +14,7 @@ const getData = (onSuccess, count) => () => fetch(
 
   })
   .then((data) => {
-    data.slice(0, count).forEach((ads) => {
-      onSuccess(ads);
-    });
+    onSuccess(data);
   })
   .catch(() => {
     showAlert('Не удалось получить данные с сервера :(');

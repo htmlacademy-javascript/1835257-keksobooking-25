@@ -70,19 +70,22 @@ mainPinMarker.on('drag', (evt) => {
 const markerGroup = L.layerGroup().addTo(map);
 
 const renderPoints = (ads) => {
-  const regularPinMarker = L.marker(
-    {
-      lat: ads.location.lat,
-      lng: ads.location.lng,
-    },
-    {
-      draggable: false,
-      icon: regularPinIcon,
-    },
-  );
-  regularPinMarker.addTo(markerGroup)
-    .bindPopup(createPopup(ads));
+  ads.forEach(({author, offer, location}) => {
+    const regularPinMarker = L.marker(
+      {
+        lat: location.lat,
+        lng: location.lng,
+      },
+      {
+        draggable: false,
+        icon: regularPinIcon,
+      },
+    );
+    regularPinMarker.addTo(markerGroup)
+      .bindPopup(createPopup({author, offer}));
+  });
 };
 
-const getAds = getData(renderPoints, ADS_COUNT);
-getAds();
+getData((data) => {
+  renderPoints(data.slice(0, ADS_COUNT));
+});
