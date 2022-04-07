@@ -62,7 +62,7 @@ const createAdvertisement = () => {
       price: getRandomInteger(5000, 20000),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(1, 5),
-      guest: getRandomInteger(1, 5),
+      guests: getRandomInteger(1, 5),
       checkin: getRandomArrayElement(TIMES),
       checkout: getRandomArrayElement(TIMES),
       features: getRandomArrayElements(FEATURES),

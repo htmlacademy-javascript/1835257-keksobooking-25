@@ -15,6 +15,8 @@ const MAIN_MARKER_COORDS = {
 
 const ADS_COUNT = 10;
 
+const MAP_ZOOM =13;
+
 getDisactiveState();
 
 const map = L.map('map-canvas')
@@ -25,7 +27,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: INITIAL_COORDS.lat,
     lng: INITIAL_COORDS.lng,
-  },13);
+  },MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -89,3 +91,24 @@ const renderPoints = (ads) => {
 getData((data) => {
   renderPoints(data.slice(0, ADS_COUNT));
 });
+
+const resetPoints = () => {
+  mainPinMarker.setLatLng({
+    lat: MAIN_MARKER_COORDS.lat,
+    lng: MAIN_MARKER_COORDS.lng,
+  });
+  map.setView({
+    lat: INITIAL_COORDS.lat,
+    lng: INITIAL_COORDS.lng,
+  }, MAP_ZOOM);
+  map.closePopup();
+};
+
+const getLocationToString = (obj, number) => {
+  let {lat, lng} = obj;
+  lat = Number(lat.toFixed(number));
+  lng = Number(lng.toFixed(number));
+  return `${lat}, ${lng}`;
+};
+
+export{resetPoints, getLocationToString, INITIAL_COORDS};

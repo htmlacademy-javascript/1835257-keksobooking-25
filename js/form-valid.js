@@ -1,4 +1,7 @@
-const form = document.querySelector('.ad-form');
+import {sendData} from './api.js';
+import {getLocationToString, INITIAL_COORDS, resetPoints} from './map.js';
+
+const adForm = document.querySelector('.ad-form');
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const adTitle = document.querySelector('#title');
@@ -7,6 +10,10 @@ const adType = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
 const timeOut = document.querySelector('#timeout');
 const sliderPrice = document.querySelector('.ad-form__slider');
+const resetButton = document.querySelector('.ad-form__reset');
+const sendButton = document.querySelector('.ad-form__submit');
+const resetFormButton = document.querySelector('.ad-form__reset');
+const mainPinLocation = document.querySelector('#address');
 
 const MAX_PRICE_FOR_NIGHT = 100000;
 
@@ -25,7 +32,7 @@ const ROOMS_OPTION = {
   '100': ['0'],
 };
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(adForm, {
   classTo: 'form__item',
   errorClass: 'form__item--invalid',
   successClass: 'form__item--valid',
@@ -103,15 +110,27 @@ timeOut.addEventListener('change', () => {
   setEqualSelectValues(timeOut, timeIn);
 });
 
-form.addEventListener('submit', (evt) => {
+const resetForm = (evt) => {
+  evt.preventDefault();
+  pristine.reset();
+  adForm.reset();
+  mainPinLocation.value = getLocationToString(INITIAL_COORDS, 5);
+  resetPoints();
+};
+
+sendButton.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
   const isValid = pristine.validate();
   if (isValid) {
-    //alert('Можно отправлять');
-  } else {
+    sendData(new FormData(evt.target));
     evt.preventDefault();
-    //alert('Форма невалидна');
+    sendButton.disabled = true;
+    resetForm(evt);
   }
 });
+
+resetFormButton.addEventListener('click', resetForm);
 
 // Добавили слайдер
 
@@ -131,4 +150,8 @@ sliderPrice.noUiSlider.on('slide', () => {
 
 adPrice.addEventListener('change', () => {
   sliderPrice.noUiSlider.set(adPrice.value);
+});
+
+resetButton.addEventListener('click', () => {
+  sliderPrice.noUiSlider.reset();
 });

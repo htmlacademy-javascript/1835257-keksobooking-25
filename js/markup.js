@@ -20,7 +20,7 @@ const translatePopupType = (data) => {
   }
 };
 
-const makeCardFeatures = (document, data) => {
+const makeCardFeatures = (document, data = []) => {
   const featureContainer = document.querySelector('.popup__features');
   const featureList = featureContainer.querySelectorAll('.popup__feature');
   const modifiers = data.map((dataItem) => `'.popup__feature--'${ dataItem}`);
@@ -34,7 +34,7 @@ const makeCardFeatures = (document, data) => {
 };
 
 
-const makeCardPhotos = (document, photos) => {
+const makeCardPhotos = (document, photos = []) => {
   for (let i = 0; i<photos.length; i++) {
     document.querySelector('.popup__photos').src = photos[i];
     return;
@@ -64,7 +64,7 @@ const createPopup = ({offer, author}) => {
   adAddress.textContent = offer.address;
   adPrice.textContent = `${offer.price} ₽/ночь`;
   adType.textContent = translatePopupType(offer.type);
-  adCapacity.textContent = `${offer.rooms} комнаты для ${offer.guest} гостей`;
+  adCapacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   adTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   adDescription.textContent = offer.description ;
   makeCardPhotos(cardElement, offer.photos);
