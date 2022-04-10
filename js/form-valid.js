@@ -42,7 +42,7 @@ const pristine = new Pristine(adForm, {
 });
 
 
-const validateAdTitle = (value) => value.left >= 30 && value.length <= 100;
+const validateAdTitle = (value) => value.length >= 30 && value.length <= 100;
 pristine.addValidator(
   adTitle,
   validateAdTitle,
@@ -118,13 +118,12 @@ const resetForm = (evt) => {
   resetPoints();
 };
 
-sendButton.addEventListener('submit', (evt) => {
+adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
   if (isValid) {
     sendData(new FormData(evt.target));
-    evt.preventDefault();
     sendButton.disabled = true;
     resetForm(evt);
   }
