@@ -1,6 +1,7 @@
 import {createPopup} from './markup.js';
-import {adForm, getActiveState, getDisactiveState} from './form.js';
-import {advertisements} from './data.js';
+import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilters, getActiveStateFilters} from './form.js';
+import {getData} from './api.js';
+
 
 const INITIAL_COORDS = {
   lat: 35.652832,
@@ -12,17 +13,22 @@ const MAIN_MARKER_COORDS = {
   lng: 139.83948,
 };
 
-getDisactiveState();
+const ADS_COUNT = 10;
+
+const MAP_ZOOM =13;
+
+getDisactiveStateForm();
+getDisactiveStateFilters();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    getActiveState();
     adForm.address.value = `${INITIAL_COORDS.lat}, ${INITIAL_COORDS.lng}`;
+    getActiveStateForm();
   })
   .setView({
     lat: INITIAL_COORDS.lat,
     lng: INITIAL_COORDS.lng,
-  },13);
+  },MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -31,14 +37,19 @@ L.tileLayer(
   },
 ).addTo(map);
 
-
-// настройка осн маркера
-
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
+const regularPinIcon = L.icon({
+  iconUrl: '../img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+// настройка осн маркера
 
 const mainPinMarker = L.marker(
   {
@@ -59,12 +70,9 @@ mainPinMarker.on('drag', (evt) => {
   adForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const renderPoints = (ads) => {
-  const regularPinIcon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
   ads.forEach(({author, offer, location}) => {
     const regularPinMarker = L.marker(
       {
@@ -76,11 +84,33 @@ const renderPoints = (ads) => {
         icon: regularPinIcon,
       },
     );
-    regularPinMarker.addTo(map)
+    regularPinMarker.addTo(markerGroup)
       .bindPopup(createPopup({author, offer}));
   });
 };
 
-renderPoints(advertisements);
+getData((data) => {
+  renderPoints(data.slice(0, ADS_COUNT));
+  getActiveStateFilters();
+});
 
+const resetPoints = () => {
+  mainPinMarker.setLatLng({
+    lat: MAIN_MARKER_COORDS.lat,
+    lng: MAIN_MARKER_COORDS.lng,
+  });
+  map.setView({
+    lat: INITIAL_COORDS.lat,
+    lng: INITIAL_COORDS.lng,
+  }, MAP_ZOOM);
+  map.closePopup();
+};
 
+const getLocationToString = (obj, number) => {
+  let {lat, lng} = obj;
+  lat = Number(lat.toFixed(number));
+  lng = Number(lng.toFixed(number));
+  return `${lat}, ${lng}`;
+};
+
+export{resetPoints, getLocationToString, INITIAL_COORDS};
