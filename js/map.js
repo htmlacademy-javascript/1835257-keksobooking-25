@@ -1,5 +1,5 @@
 import {createPopup} from './markup.js';
-import {adForm, getActiveState, getDisactiveState} from './form.js';
+import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilters, getActiveStateFilters} from './form.js';
 import {getData} from './api.js';
 
 
@@ -17,12 +17,13 @@ const ADS_COUNT = 10;
 
 const MAP_ZOOM =13;
 
-getDisactiveState();
+getDisactiveStateForm();
+getDisactiveStateFilters();
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    getActiveState();
     adForm.address.value = `${INITIAL_COORDS.lat}, ${INITIAL_COORDS.lng}`;
+    getActiveStateForm();
   })
   .setView({
     lat: INITIAL_COORDS.lat,
@@ -90,6 +91,7 @@ const renderPoints = (ads) => {
 
 getData((data) => {
   renderPoints(data.slice(0, ADS_COUNT));
+  getActiveStateFilters();
 });
 
 const resetPoints = () => {
