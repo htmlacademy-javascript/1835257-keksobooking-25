@@ -1,6 +1,8 @@
 import {createPopup} from './markup.js';
 import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilters, getActiveStateFilters} from './form.js';
 import {getData} from './api.js';
+import {debounce, showAlert} from './util.js';
+import {checkAllFilters} from './filters.js';
 
 
 const INITIAL_COORDS = {
@@ -89,10 +91,15 @@ const renderPoints = (ads) => {
   });
 };
 
-getData((data) => {
-  renderPoints(data.slice(0, ADS_COUNT));
+let allAds = [];
+allAds = getData();
+
+(async function () {
+  allAds = await getData();
+  renderPoints(allAds.slice(0, ADS_COUNT));
   getActiveStateFilters();
-});
+})();
+
 
 const resetPoints = () => {
   mainPinMarker.setLatLng({
@@ -112,5 +119,20 @@ const getLocationToString = (obj, number) => {
   lng = Number(lng.toFixed(number));
   return `${lat}, ${lng}`;
 };
+
+const filterForm = document.querySelector('.map__filters');
+
+const filterAd = () => {
+  markerGroup.clearLayers();
+
+  const filteredAds = allAds.filter(({author, offer, location}) => checkAllFilters({author, offer, location}));
+
+  filteredAds.slice(0, ADS_COUNT);
+  renderPoints(filteredAds);
+
+  if (filteredAds.length <= 0) {showAlert('Не удалось найти подходящие объявления');}
+};
+
+filterForm.addEventListener('change', debounce(filterAd));
 
 export{resetPoints, getLocationToString, INITIAL_COORDS};
