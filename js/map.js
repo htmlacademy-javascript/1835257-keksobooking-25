@@ -126,9 +126,7 @@ const filterAd = () => {
   markerGroup.clearLayers();
 
   const filteredAds = allAds.filter(({author, offer, location}) => checkAllFilters({author, offer, location}));
-
-  filteredAds.slice(0, ADS_COUNT);
-  renderPoints(filteredAds);
+  renderPoints(filteredAds.slice(0, ADS_COUNT));
 
   if (filteredAds.length <= 0) {showAlert('Не удалось найти подходящие объявления');}
 };
