@@ -1,23 +1,9 @@
-import {createPopup} from './markup.js';
-import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilters, getActiveStateFilters} from './form.js';
+import {createPopup} from './popup.js';
+import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilters, getActiveStateFilters} from './form-activate.js';
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
 import {checkAllFilters} from './filters.js';
-
-
-const INITIAL_COORDS = {
-  lat: 35.652832,
-  lng: 139.839478,
-};
-
-const MAIN_MARKER_COORDS = {
-  lat: 35.65283,
-  lng: 139.83948,
-};
-
-const ADS_COUNT = 10;
-
-const MAP_ZOOM =13;
+import {ADS_COUNT, INITIAL_COORDS, MAIN_MARKER_COORDS, MAP_ZOOM, NUMBER_AFTER_POINT} from './const.js';
 
 getDisactiveStateForm();
 getDisactiveStateFilters();
@@ -69,7 +55,7 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('drag', (evt) => {
   const coords = evt.target.getLatLng();
-  adForm.address.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
+  adForm.address.value = `${coords.lat.toFixed(NUMBER_AFTER_POINT)}, ${coords.lng.toFixed(NUMBER_AFTER_POINT)}`;
 });
 
 const markerGroup = L.layerGroup().addTo(map);
@@ -94,7 +80,7 @@ const renderPoints = (ads) => {
 let allAds = [];
 allAds = getData();
 
-(async function () {
+(async () => {
   allAds = await getData();
   renderPoints(allAds.slice(0, ADS_COUNT));
   getActiveStateFilters();

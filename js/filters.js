@@ -1,22 +1,4 @@
-const priceRanges = {
-  any: {
-    minprice : 0,
-    maxprice : 100000,
-  },
-  middle: {
-    minprice : 10001,
-    maxprice : 50000,
-  },
-  low: {
-    minprice : 0,
-    maxprice : 10000,
-  },
-  high: {
-    minprice : 50001,
-    maxprice : 100000,
-  },
-};
-
+import {PriceRanges} from './const.js';
 
 const typeSelector = document.querySelector('#housing-type');
 const priceSelector = document.querySelector('#housing-price');
@@ -35,7 +17,7 @@ const checkArrayInclude = (first, second) => {
 };
 
 const checkType = (obj, value) => value === 'any' || value === obj.offer.type;
-const checkPrice = (obj, price) => obj.offer.price <= priceRanges[price].maxprice && obj.offer.price >= priceRanges[price].minprice;
+const checkPrice = (obj, price) => obj.offer.price <= PriceRanges[price].maxprice && obj.offer.price >= PriceRanges[price].minprice;
 const checkRooms = (obj, value) => value === 'any' || value === String(obj.offer.rooms);
 const checkGuests = (obj, value) => value === 'any' || value === String(obj.offer.guests);
 

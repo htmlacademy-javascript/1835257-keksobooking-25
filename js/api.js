@@ -1,10 +1,6 @@
 import {showAlert} from './util.js';
 import {openErrorSendMessage, openSuccessSendMessage} from './errors.js';
-
-const ServerUrl = {
-  GET_URL: 'https://25.javascript.pages.academy/keksobooking/data',
-  POST_URL: 'https://25.javascript.pages.academy/keksobooking',
-};
+import {ServerUrl} from './const.js';
 
 const getData = async () => {
   let response;

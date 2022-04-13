@@ -1,8 +1,9 @@
 import {sendData} from './api.js';
 import {getLocationToString, INITIAL_COORDS, resetPoints} from './map.js';
 import {resetImages} from './avatar.js';
+import {MAX_PRICE_FOR_NIGHT, MIN_AD_PRICE, ROOMS_OPTION} from './const.js';
+import {adForm} from './form-activate.js';
 
-const adForm = document.querySelector('.ad-form');
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
 const adTitle = document.querySelector('#title');
@@ -15,23 +16,6 @@ const resetButton = document.querySelector('.ad-form__reset');
 const sendButton = document.querySelector('.ad-form__submit');
 const resetFormButton = document.querySelector('.ad-form__reset');
 const mainPinLocation = document.querySelector('#address');
-
-const MAX_PRICE_FOR_NIGHT = 100000;
-
-const  MIN_AD_PRICE= {
-  palace: 10000,
-  flat: 1000,
-  house: 5000,
-  bungalow: 0,
-  hotel: 3000,
-};
-
-const ROOMS_OPTION = {
-  '1': ['1'],
-  '2': ['2', '1'],
-  '3': ['3', '2', '1'],
-  '100': ['0'],
-};
 
 const pristine = new Pristine(adForm, {
   classTo: 'form__item',
@@ -81,8 +65,6 @@ adType.addEventListener('change', () => {
   onAdTypeChange();
 });
 
-// Валидация количества комнат и гостей
-
 
 const validateDelivery = () => ROOMS_OPTION[roomNumber.value].includes(capacity.value);
 const getDeliveryErrorMessage = () => 'Выберите другое кол-во гостей :)';
@@ -96,8 +78,6 @@ pristine.addValidator(
 roomNumber.addEventListener('change', () => {
   pristine.validate(capacity);
 });
-
-// Валидация времени заезда и выезда
 
 const setEqualSelectValues = (first, second) => {
   second.value = first.value;
@@ -132,8 +112,6 @@ adForm.addEventListener('submit', (evt) => {
 });
 
 resetFormButton.addEventListener('click', resetForm);
-
-// Добавили слайдер
 
 noUiSlider.create(sliderPrice, {
   range: {
