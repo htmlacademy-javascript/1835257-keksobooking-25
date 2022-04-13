@@ -1,5 +1,6 @@
 import {sendData} from './api.js';
 import {getLocationToString, INITIAL_COORDS, resetPoints} from './map.js';
+import {resetImages} from './avatar.js';
 
 const adForm = document.querySelector('.ad-form');
 const roomNumber = document.querySelector('#room_number');
@@ -116,6 +117,7 @@ const resetForm = (evt) => {
   adForm.reset();
   mainPinLocation.value = getLocationToString(INITIAL_COORDS, 5);
   resetPoints();
+  resetImages();
 };
 
 adForm.addEventListener('submit', (evt) => {
