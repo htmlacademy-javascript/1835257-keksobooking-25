@@ -1,3 +1,5 @@
+import {getDeclination} from './util.js';
+
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const translatePopupType = (data) => {
@@ -64,7 +66,7 @@ const createPopup = ({offer, author}) => {
   adAddress.textContent = offer.address;
   adPrice.textContent = `${offer.price} ₽/ночь`;
   adType.textContent = translatePopupType(offer.type);
-  adCapacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
+  adCapacity.textContent = `${offer.rooms} ${getDeclination(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getDeclination(offer.guests, 'гостя', 'гостей', 'гостей')}`;
   adTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   adDescription.textContent = offer.description ;
   makeCardPhotos(cardElement, offer.photos);
