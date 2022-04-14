@@ -1,8 +1,6 @@
-import {showAlert} from './util.js';
-import {openErrorSendMessage, openSuccessSendMessage} from './errors.js';
 import {ServerUrl} from './const.js';
 
-const getData = async () => {
+const getData = async (onError) => {
   let response;
   try {
     response = await fetch(
@@ -14,7 +12,7 @@ const getData = async () => {
     );
   }
   catch (err) {
-    showAlert('Не удалось получить данные с сервера :(');
+    onError();
     return [];
   }
 
@@ -22,9 +20,9 @@ const getData = async () => {
   return allAds;
 };
 
-const sendData = (body) => {
+const sendData = (body, reset, onSuccess, onError) => {
   fetch(
-    'https://25.javascript.pages.academy/keksobooking',
+    ServerUrl.POST_URL,
     {
       method: 'POST',
       body,
@@ -32,13 +30,14 @@ const sendData = (body) => {
   )
     .then((response) => {
       if (response.ok) {
-        openSuccessSendMessage();
+        onSuccess();
+        reset();
       } else {
-        openErrorSendMessage();
+        onError();
       }
     })
     .catch(() => {
-      openErrorSendMessage();
+      onError();
     });
 };
 

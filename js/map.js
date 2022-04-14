@@ -3,7 +3,9 @@ import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilt
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
 import {checkAllFilters} from './filters.js';
-import {ADS_COUNT, INITIAL_COORDS, MAIN_MARKER_COORDS, MAP_ZOOM, NUMBER_AFTER_POINT} from './const.js';
+import {ADS_COUNT, INITIAL_COORDS, MAIN_MARKER_COORDS, MAP_ZOOM, Messages, NUMBER_AFTER_POINT} from './const.js';
+
+const allAds = [];
 
 getDisactiveStateForm();
 getDisactiveStateFilters();
@@ -77,11 +79,9 @@ const renderPoints = (ads) => {
   });
 };
 
-let allAds = [];
-allAds = getData();
-
 (async () => {
-  allAds = await getData();
+  const fetchedAds = await getData(() => showAlert(`${Messages.GET_NO_ADS}`));
+  allAds.push(...fetchedAds);
   renderPoints(allAds.slice(0, ADS_COUNT));
   getActiveStateFilters();
 })();
@@ -114,7 +114,9 @@ const filterAd = () => {
   const filteredAds = allAds.filter(({author, offer, location}) => checkAllFilters({author, offer, location}));
   renderPoints(filteredAds.slice(0, ADS_COUNT));
 
-  if (filteredAds.length <= 0) {showAlert('Не удалось найти подходящие объявления');}
+  if (filteredAds.length <= 0) {
+    showAlert(`${Messages.FIND_NO_ADS}`);
+  }
 };
 
 filterForm.addEventListener('change', debounce(filterAd));

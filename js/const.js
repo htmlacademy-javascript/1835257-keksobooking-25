@@ -3,8 +3,25 @@ const ServerUrl = {
   POST_URL: 'https://25.javascript.pages.academy/keksobooking',
 };
 
+const Messages = {
+  GET_NO_ADS: 'Не удалось получить данные с сервера :(',
+  FIND_NO_ADS: 'Не удалось найти подходящие объявления',
+};
+
+const MAX_PRICE_FOR_NIGHT = 100000;
+const ADS_COUNT = 10;
+const MAP_ZOOM =13;
+const NUMBER_AFTER_POINT = 5;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const BASE_IMG_CONTENT = '<img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">';
+
+const TYPE_ITEM = {
+  'Дворец': 'palace',
+  'Квартира': 'flat',
+  'Дом': 'house',
+  'Бунгало': 'bungalow',
+  'Отель': 'hotel',
+};
 
 const INITIAL_COORDS = {
   lat: 35.652832,
@@ -16,11 +33,6 @@ const MAIN_MARKER_COORDS = {
   lng: 139.83948,
 };
 
-const ADS_COUNT = 10;
-
-const MAP_ZOOM =13;
-
-const NUMBER_AFTER_POINT = 5;
 
 const PriceRanges = {
   any: {
@@ -41,8 +53,6 @@ const PriceRanges = {
   },
 };
 
-const MAX_PRICE_FOR_NIGHT = 100000;
-
 const  MIN_AD_PRICE = {
   palace: 10000,
   flat: 1000,
@@ -51,7 +61,7 @@ const  MIN_AD_PRICE = {
   hotel: 3000,
 };
 
-const ROOMS_OPTION = {
+const ROOMS_GUESTS_OPTIONS = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
@@ -65,9 +75,11 @@ export {ServerUrl,
   PriceRanges,
   MAX_PRICE_FOR_NIGHT,
   MIN_AD_PRICE,
-  ROOMS_OPTION,
+  ROOMS_GUESTS_OPTIONS,
   INITIAL_COORDS,
   NUMBER_AFTER_POINT,
   MAP_ZOOM,
   MAIN_MARKER_COORDS,
-  ADS_COUNT};
+  ADS_COUNT,
+  TYPE_ITEM,
+  Messages};
