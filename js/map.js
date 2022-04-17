@@ -111,8 +111,8 @@ const filterForm = document.querySelector('.map__filters');
 const filterAd = () => {
   markerGroup.clearLayers();
 
-  const filteredAds = allAds.filter(({author, offer, location}) => checkAllFilters({author, offer, location}));
-  renderPoints(filteredAds.slice(0, ADS_COUNT));
+  const filteredAds = allAds.slice(0, ADS_COUNT).filter(checkAllFilters);
+  renderPoints(filteredAds);
 
   if (filteredAds.length <= 0) {
     showAlert(`${Messages.FIND_NO_ADS}`);
