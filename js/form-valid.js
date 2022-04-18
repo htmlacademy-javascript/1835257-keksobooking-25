@@ -1,12 +1,12 @@
 import {sendData} from './api.js';
 import {getLocationToString, INITIAL_COORDS, resetPoints} from './map.js';
 import {resetImages} from './avatar.js';
-import {MAX_PRICE_FOR_NIGHT, MIN_AD_PRICE, ROOMS_OPTION} from './const.js';
+import {MAX_PRICE_FOR_NIGHT, MIN_AD_PRICE, NUMBER_AFTER_POINT, ROOMS_GUESTS_OPTIONS} from './const.js';
 import {adForm} from './form-activate.js';
+import {openMessage} from './errors.js';
 
 const roomNumber = document.querySelector('#room_number');
 const capacity = document.querySelector('#capacity');
-const adTitle = document.querySelector('#title');
 const adPrice = document.querySelector('#price');
 const adType = document.querySelector('#type');
 const timeIn = document.querySelector('#timein');
@@ -16,6 +16,8 @@ const resetButton = document.querySelector('.ad-form__reset');
 const sendButton = document.querySelector('.ad-form__submit');
 const resetFormButton = document.querySelector('.ad-form__reset');
 const mainPinLocation = document.querySelector('#address');
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 
 const pristine = new Pristine(adForm, {
   classTo: 'form__item',
@@ -26,18 +28,9 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'form__error',
 });
 
-
-const validateAdTitle = (value) => value.length >= 30 && value.length <= 100;
-pristine.addValidator(
-  adTitle,
-  validateAdTitle,
-  'От 30 до 100 символов', 2, true
-);
-
-
 const validateAdPrice = (value) => {
   const unit = document.querySelector('#type');
-  return value >= MIN_AD_PRICE[unit.value] && value <= 100000;
+  return value >= MIN_AD_PRICE[unit.value] && value <= MAX_PRICE_FOR_NIGHT;
 };
 
 const getAdTypeErrorMessage = () => {
@@ -66,7 +59,7 @@ adType.addEventListener('change', () => {
 });
 
 
-const validateDelivery = () => ROOMS_OPTION[roomNumber.value].includes(capacity.value);
+const validateDelivery = () => ROOMS_GUESTS_OPTIONS[roomNumber.value].includes(capacity.value);
 const getDeliveryErrorMessage = () => 'Выберите другое кол-во гостей :)';
 
 pristine.addValidator(
@@ -95,7 +88,7 @@ const resetForm = (evt) => {
   evt.preventDefault();
   pristine.reset();
   adForm.reset();
-  mainPinLocation.value = getLocationToString(INITIAL_COORDS, 5);
+  mainPinLocation.value = getLocationToString(INITIAL_COORDS, NUMBER_AFTER_POINT);
   resetPoints();
   resetImages();
 };
@@ -105,13 +98,20 @@ adForm.addEventListener('submit', (evt) => {
 
   const isValid = pristine.validate();
   if (isValid) {
-    sendData(new FormData(evt.target));
+    sendData(new FormData(evt.target),
+      () => resetForm(evt),
+      () => openMessage(successTemplate, false),
+      () => openMessage(errorTemplate, true),
+    );
     sendButton.disabled = true;
-    resetForm(evt);
   }
 });
 
-resetFormButton.addEventListener('click', resetForm);
+const onClickResetButton = (evt) => {
+  resetForm(evt);
+};
+
+resetFormButton.addEventListener('click', onClickResetButton);
 
 noUiSlider.create(sliderPrice, {
   range: {

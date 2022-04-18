@@ -8,7 +8,6 @@ const showAlert = (message) => {
   alertContainer.style.right = '50%';
   alertContainer.style.transform = 'translateX(50%)';
   alertContainer.style.top = '55px';
-
   alertContainer.style.padding = '10px 3px';
   alertContainer.style.fontSize = '12px';
   alertContainer.style.textAlign = 'center';
