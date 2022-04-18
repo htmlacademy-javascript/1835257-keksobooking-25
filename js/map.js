@@ -7,6 +7,8 @@ import {ADS_COUNT, INITIAL_COORDS, MAIN_MARKER_COORDS, MAP_ZOOM, Messages, NUMBE
 
 const allAds = [];
 
+const filterForm = document.querySelector('.map__filters');
+
 getDisactiveStateForm();
 getDisactiveStateFilters();
 
@@ -105,8 +107,6 @@ const getLocationToString = (obj, number) => {
   lng = Number(lng.toFixed(number));
   return `${lat}, ${lng}`;
 };
-
-const filterForm = document.querySelector('.map__filters');
 
 const filterAd = () => {
   markerGroup.clearLayers();

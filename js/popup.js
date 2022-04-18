@@ -5,11 +5,9 @@ const cardTemplate = document.querySelector('#card').content.querySelector('.pop
 
 const translatePopupType = (data) => {
   for (const key in TYPE_ITEM) {
-
     if (TYPE_ITEM[key] === data) {
       return key;
     }
-
   }
 };
 
