@@ -8,19 +8,41 @@ const Messages = {
   FIND_NO_ADS: 'Не удалось найти подходящие объявления',
 };
 
+const DEFAULT_VALUE = 'any';
+const AVATAR_WIDTH = 40;
+const AVATAR_HEIGHT = 44;
+const SLIDER_STEP_PRICE = 100;
 const MAX_PRICE_FOR_NIGHT = 100000;
 const ADS_COUNT = 10;
-const MAP_ZOOM =13;
+const MAP_ZOOM = 13;
 const NUMBER_AFTER_POINT = 5;
+const RERENDER_DELAY = 500;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const BASE_IMG_CONTENT = '<img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">';
 
-const TYPE_ITEM = {
-  'Дворец': 'palace',
-  'Квартира': 'flat',
-  'Дом': 'house',
-  'Бунгало': 'bungalow',
-  'Отель': 'hotel',
+const AdsTypes = {
+  PALACE: 'palace',
+  FLAT: 'flat',
+  HOUSE: 'house',
+  BUNGALOW: 'bungalow',
+  HOTEL: 'hotel',
+  ANY: 'any',
+};
+
+export const adTypesToReadable = {
+  [AdsTypes.PALACE]: 'Дворец',
+  [AdsTypes.FLAT]: 'Квартира',
+  [AdsTypes.HOUSE]: 'Дом',
+  [AdsTypes.BUNGALOW]: 'Бунгало',
+  [AdsTypes.HOTEL]: 'Отель',
+};
+
+const adTypesToPrice = {
+  [AdsTypes.PALACE]: 10000,
+  [AdsTypes.FLAT]: 1000,
+  [AdsTypes.HOUSE]: 5000,
+  [AdsTypes.BUNGALOW]: 0,
+  [AdsTypes.HOTEL]: 3000,
 };
 
 const INITIAL_COORDS = {
@@ -33,32 +55,23 @@ const MAIN_MARKER_COORDS = {
   lng: 139.83948,
 };
 
-
 const PriceRanges = {
-  any: {
+  ANY: {
     minprice : 0,
     maxprice : 100000,
   },
-  middle: {
+  MIDDLE: {
     minprice : 10001,
     maxprice : 50000,
   },
-  low: {
+  LOW: {
     minprice : 0,
     maxprice : 10000,
   },
-  high: {
+  HIGH: {
     minprice : 50001,
     maxprice : 100000,
   },
-};
-
-const  MIN_AD_PRICE = {
-  palace: 10000,
-  flat: 1000,
-  house: 5000,
-  bungalow: 0,
-  hotel: 3000,
 };
 
 const ROOMS_GUESTS_OPTIONS = {
@@ -74,12 +87,18 @@ export {ServerUrl,
   BASE_IMG_CONTENT,
   PriceRanges,
   MAX_PRICE_FOR_NIGHT,
-  MIN_AD_PRICE,
   ROOMS_GUESTS_OPTIONS,
   INITIAL_COORDS,
   NUMBER_AFTER_POINT,
   MAP_ZOOM,
   MAIN_MARKER_COORDS,
   ADS_COUNT,
-  TYPE_ITEM,
-  Messages};
+  Messages,
+  SLIDER_STEP_PRICE,
+  AVATAR_WIDTH,
+  AVATAR_HEIGHT,
+  adTypesToPrice,
+  AdsTypes,
+  DEFAULT_VALUE,
+  RERENDER_DELAY
+};
