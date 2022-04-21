@@ -3,7 +3,14 @@ import {adForm, getActiveStateForm, getDisactiveStateForm, getDisactiveStateFilt
 import {getData} from './api.js';
 import {debounce, showAlert} from './util.js';
 import {checkAllFilters} from './filters.js';
-import {ADS_COUNT, INITIAL_COORDS, MAIN_MARKER_COORDS, MAP_ZOOM, Messages, NUMBER_AFTER_POINT} from './const.js';
+import {
+  ADS_COUNT,
+  INITIAL_COORDS,
+  MAIN_MARKER_COORDS,
+  MAP_ZOOM,
+  Messages,
+  NUMBER_AFTER_POINT, RERENDER_DELAY,
+} from './const.js';
 
 const allAds = [];
 
@@ -108,17 +115,25 @@ const getLocationToString = (obj, number) => {
   return `${lat}, ${lng}`;
 };
 
-const filterAd = () => {
+const filterAd = (ads) => {
   markerGroup.clearLayers();
-
-  const filteredAds = allAds.slice(0, ADS_COUNT).filter(checkAllFilters);
+  const filteredAds = [];
+  for (const element of ads) {
+    if (checkAllFilters(element)) {
+      filteredAds.push(element);
+    }
+    if (filteredAds.length >= ADS_COUNT) {
+      break;
+    }
+  }
   renderPoints(filteredAds);
-
   if (filteredAds.length <= 0) {
     showAlert(`${Messages.FIND_NO_ADS}`);
   }
 };
 
-filterForm.addEventListener('change', debounce(filterAd));
+const onFilterChange = (cb) => filterForm.addEventListener('change', cb);
+
+onFilterChange(debounce(() => filterAd(allAds), RERENDER_DELAY));
 
 export{resetPoints, getLocationToString, INITIAL_COORDS};

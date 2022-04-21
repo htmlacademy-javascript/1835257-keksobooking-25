@@ -1,15 +1,8 @@
 import {getDeclination} from './util.js';
-import {TYPE_ITEM} from './const.js';
+import {adTypesToReadable} from './const.js';
 
 const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const translatePopupType = (data) => {
-  for (const key in TYPE_ITEM) {
-    if (TYPE_ITEM[key] === data) {
-      return key;
-    }
-  }
-};
 
 const makeCardFeatures = (document, data) => {
 
@@ -63,7 +56,7 @@ const createPopup = ({offer, author}) => {
   adTitle.textContent = offer.title;
   adAddress.textContent = offer.address;
   adPrice.textContent = `${offer.price} ₽/ночь`;
-  adType.textContent = translatePopupType(offer.type);
+  adType.textContent = adTypesToReadable[offer.type];
   adCapacity.textContent = `${offer.rooms} ${getDeclination(offer.rooms, 'комната', 'комнаты', 'комнат')} для ${offer.guests} ${getDeclination(offer.guests, 'гостя', 'гостей', 'гостей')}`;
   adTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   adDescription.textContent = offer.description ;

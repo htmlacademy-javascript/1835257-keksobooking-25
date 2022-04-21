@@ -1,7 +1,12 @@
 import {sendData} from './api.js';
 import {getLocationToString, INITIAL_COORDS, resetPoints} from './map.js';
 import {resetImages} from './avatar.js';
-import {MAX_PRICE_FOR_NIGHT, MIN_AD_PRICE, NUMBER_AFTER_POINT, ROOMS_GUESTS_OPTIONS} from './const.js';
+import {
+  adTypesToPrice,
+  MAX_PRICE_FOR_NIGHT,
+  NUMBER_AFTER_POINT,
+  ROOMS_GUESTS_OPTIONS, SLIDER_STEP_PRICE
+} from './const.js';
 import {adForm} from './form-activate.js';
 import {openMessage} from './errors.js';
 
@@ -28,15 +33,8 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'form__error',
 });
 
-const validateAdPrice = (value) => {
-  const unit = document.querySelector('#type');
-  return value >= MIN_AD_PRICE[unit.value] && value <= MAX_PRICE_FOR_NIGHT;
-};
-
-const getAdTypeErrorMessage = () => {
-  const unit = document.querySelector('#type');
-  return `Минимальная цена за ночь: ${MIN_AD_PRICE[unit.value]}`;
-};
+const validateAdPrice = (value) => value >= adTypesToPrice[adType.value] && value <= MAX_PRICE_FOR_NIGHT;
+const getAdTypeErrorMessage = () => `Минимальная цена за ночь: ${adTypesToPrice[adType.value]}`;
 
 pristine.addValidator(
   adPrice,
@@ -44,14 +42,12 @@ pristine.addValidator(
   getAdTypeErrorMessage
 );
 
-const setMinPrice = (type, price) => {
-  price.min = MIN_AD_PRICE[type.value];
-  price.placeholder =  MIN_AD_PRICE[type.value];
-};
-
 const onAdTypeChange = () => {
-  setMinPrice(adType, adPrice);
-  pristine.validate(adPrice);
+  adPrice.min = adTypesToPrice[adType.value];
+  adPrice.placeholder =  adTypesToPrice[adType.value];
+  if (adPrice.value) {
+    pristine.validate(adPrice);
+  }
 };
 
 adType.addEventListener('change', () => {
@@ -115,11 +111,11 @@ resetFormButton.addEventListener('click', onClickResetButton);
 
 noUiSlider.create(sliderPrice, {
   range: {
-    min: 0,
+    min: adTypesToPrice[adType.value],
     max: MAX_PRICE_FOR_NIGHT,
   },
-  start: 0,
-  step: 100,
+  start: adPrice.placeholder,
+  step: SLIDER_STEP_PRICE,
 });
 
 sliderPrice.noUiSlider.on('slide', () => {

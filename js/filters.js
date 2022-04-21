@@ -1,4 +1,4 @@
-import {PriceRanges} from './const.js';
+import {AdsTypes, DEFAULT_VALUE, PriceRanges} from './const.js';
 
 const typeSelector = document.querySelector('#housing-type');
 const priceSelector = document.querySelector('#housing-price');
@@ -7,19 +7,10 @@ const guestsFilter = document.querySelector('#housing-guests');
 
 const getSelectCheckboxes = () => Array.from(document.querySelectorAll('input[name="features"]:checked')).map((cb) => cb.value);
 
-const checkArrayInclude = (first, second) => {
-  for (let i = 0; i < second.length; i++){
-    if (first.indexOf(second[i]) === -1) {
-      return false;
-    }
-  }
-  return true;
-};
-
-const checkType = (obj, value) => value === 'any' || value === obj.offer.type;
-const checkPrice = (obj, price) => obj.offer.price <= PriceRanges[price].maxprice && obj.offer.price >= PriceRanges[price].minprice;
-const checkRooms = (obj, value) => value === 'any' || value === String(obj.offer.rooms);
-const checkGuests = (obj, value) => value === 'any' || value === String(obj.offer.guests);
+const checkType = (obj, value) => value === AdsTypes.ANY || value === obj.offer.type;
+const checkPrice = (obj, price) => obj.offer.price <= PriceRanges[price.toUpperCase()].maxprice && obj.offer.price >= PriceRanges[price.toUpperCase()].minprice;
+const checkRooms = (obj, value) => value === DEFAULT_VALUE || value === String(obj.offer.rooms);
+const checkGuests = (obj, value) => value === DEFAULT_VALUE || value === String(obj.offer.guests);
 
 const checkFeatures = (obj) => {
   const adFeatures = obj.offer.features;
@@ -27,10 +18,10 @@ const checkFeatures = (obj) => {
   if (selectFeatures.length === 0) {
     return true;
   }
-  if (!adFeatures) {
-    return false;
+  if (adFeatures){
+    return selectFeatures.every((feature) => adFeatures.includes(feature));
   }
-  return checkArrayInclude(adFeatures, selectFeatures);
+  return false;
 };
 
 const checkAllFilters = (object) => {

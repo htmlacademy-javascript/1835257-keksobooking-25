@@ -1,4 +1,4 @@
-import {BASE_IMG_CONTENT, FILE_TYPES} from './const.js';
+import {AVATAR_HEIGHT, AVATAR_WIDTH, BASE_IMG_CONTENT, FILE_TYPES} from './const.js';
 
 const avatarChooser = document.querySelector('#avatar');
 const avatarPreview = document.querySelector('.ad-form-header__preview');
@@ -17,8 +17,8 @@ const getPreview = (fileChooser, preview) => {
       reader.addEventListener('load', () => {
         const image = document.createElement('img');
         image.src = reader.result;
-        image.width = 40;
-        image.height = 44;
+        image.width = AVATAR_WIDTH;
+        image.height = AVATAR_HEIGHT;
         preview.style.padding = '0 15px';
         preview.style.alignItems = 'center';
         preview.style.display = 'flex';
