@@ -92,7 +92,7 @@ const renderPoints = (ads) => {
   const fetchedAds = await getData(() => showAlert(`${Messages.GET_NO_ADS}`));
   allAds.push(...fetchedAds);
   renderPoints(allAds.slice(0, ADS_COUNT));
-  if (allAds.length === 0) {
+  if (allAds.length <= 0) {
     getDisactiveStateFilters();
   } else {
     getActiveStateFilters();
