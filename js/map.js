@@ -132,9 +132,7 @@ const filterAd = (ads) => {
   }
 };
 
-const onFilterChange = (cb) => filterForm.addEventListener('change', () => {
-  cb();
-});
+const onFilterChange = (cb) => filterForm.addEventListener('change', cb);
 
 onFilterChange(debounce(() => filterAd(allAds), RERENDER_DELAY));
 
