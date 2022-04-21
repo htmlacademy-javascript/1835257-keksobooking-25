@@ -10,14 +10,12 @@ const getData = async (onError) => {
         credentials: 'same-origin',
       },
     );
+    return await response.json();
   }
   catch (err) {
     onError();
     return [];
   }
-
-  const allAds = await response.json();
-  return allAds;
 };
 
 const sendData = (body, reset, onSuccess, onError) => {
